@@ -50,6 +50,10 @@ async function trackClick(event) {
     timestamp: new Date().toISOString(),
     x: event.pageX,
     y: event.pageY,
+    viewport_width: window.innerWidth,
+    viewport_height: window.innerHeight,
+    scroll_x: window.scrollX,
+    scroll_y: window.scrollY,
   };
 
   try {

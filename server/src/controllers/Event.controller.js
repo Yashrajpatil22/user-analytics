@@ -2,7 +2,18 @@ import Event from "../models/Event.model.js";
 
 const createEvent = async (req, res, next) => {
   try {
-    const { session_id, event_type, page_url, timestamp, x, y } = req.body;
+    const {
+      session_id,
+      event_type,
+      page_url,
+      timestamp,
+      x,
+      y,
+      viewport_width,
+      viewport_height,
+      scroll_x,
+      scroll_y,
+    } = req.body;
 
     if (!session_id || !event_type || !page_url || !timestamp) {
       return res.status(400).json({
@@ -43,6 +54,24 @@ const createEvent = async (req, res, next) => {
         message: "Click events require non-negative numeric x and y coordinates",
       });
     }
+    if (event_type === "click") {
+      if (
+        !Number.isFinite(viewport_width) ||
+        viewport_width < 1 ||
+        !Number.isFinite(viewport_height) ||
+        viewport_height < 1 ||
+        !Number.isFinite(scroll_x) ||
+        scroll_x < 0 ||
+        !Number.isFinite(scroll_y) ||
+        scroll_y < 0
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Click events require valid viewport dimensions and scroll positions",
+        });
+      }
+    }
 
     const eventData = {
       session_id,
@@ -54,6 +83,10 @@ const createEvent = async (req, res, next) => {
     if (event_type === "click") {
       eventData.x = x;
       eventData.y = y;
+      eventData.viewport_width = viewport_width;
+      eventData.viewport_height = viewport_height;
+      eventData.scroll_x = scroll_x;
+      eventData.scroll_y = scroll_y;
     }
 
     const event = await Event.create(eventData);
@@ -83,7 +116,9 @@ const getPageClicks = async (req, res, next) => {
       page_url: pageUrl,
       event_type: "click",
     })
-      .select("session_id page_url timestamp x y")
+      .select(
+        "session_id page_url timestamp x y viewport_width viewport_height scroll_x scroll_y",
+      )
       .sort({ timestamp: 1 });
 
     return res.status(200).json({

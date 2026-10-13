@@ -41,10 +41,26 @@ const eventSchema = new mongoose.Schema(
       },
       min: 0,
     },
+    viewport_width: {
+      type: Number,
+      min: 1,
+    },
+    viewport_height: {
+      type: Number,
+      min: 1,
+    },
+    scroll_x: {
+      type: Number,
+      min: 0,
+    },
+    scroll_y: {
+      type: Number,
+      min: 0,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 eventSchema.index({ session_id: 1, timestamp: 1 });
