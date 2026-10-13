@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDB from './db/index.js';
 import eventRoutes from './routes/Event.route.js';
+import sessionRoutes from './routes/Session.route.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -10,6 +11,7 @@ app.get('/', (req, res) => {
 
 app.use(express.json());
 app.use('/api/events', eventRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 connectDB()
   .then(
