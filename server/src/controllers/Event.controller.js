@@ -96,4 +96,20 @@ const getPageClicks = async (req, res, next) => {
   }
 };
 
-export { createEvent, getPageClicks};
+const getPageUrls = async (req, res, next) => {
+  try {
+    const pages = await Event.distinct("page_url", {
+      event_type: "click",
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: pages.length,
+      data: pages.sort(),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createEvent, getPageClicks, getPageUrls };
