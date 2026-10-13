@@ -40,3 +40,5 @@ async function trackPageView() {
     console.error("Error tracking page view:", error);
   }
 }
+
+trackPageView();
