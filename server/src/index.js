@@ -3,17 +3,20 @@ import connectDB from './db/index.js';
 import eventRoutes from './routes/Event.route.js';
 import sessionRoutes from './routes/Session.route.js';
 import errorMiddleware from "./middlewares/error.middleware.js";
+import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+app.use(cors());
 
 app.use(express.json());
 app.use('/api/events', eventRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use(errorMiddleware);
+
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
 
 connectDB()
   .then(
