@@ -68,4 +68,32 @@ const createEvent = async (req, res, next) => {
   }
 };
 
-export { createEvent };
+const getPageClicks = async (req, res, next) => {
+  try {
+    const { pageUrl } = req.query;
+
+    if (!pageUrl || !pageUrl.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "pageUrl query parameter is required",
+      });
+    }
+
+    const clicks = await Event.find({
+      page_url: pageUrl,
+      event_type: "click",
+    })
+      .select("session_id page_url timestamp x y")
+      .sort({ timestamp: 1 });
+
+    return res.status(200).json({
+      success: true,
+      count: clicks.length,
+      data: clicks,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createEvent, getPageClicks};
