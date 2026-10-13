@@ -13,6 +13,13 @@ A lightweight, full-stack analytics application that tracks user interactions on
 - **Website preview:** Displays the selected webpage when embedding is supported, with a fallback visualization when necessary.
 - **Persistent storage:** Stores structured event records in MongoDB.
 
+## Live Demo
+
+- **Frontend Dashboard:** https://user-analytics-nu.vercel.app
+- **Backend API:** https://user-analytics-u55g.onrender.com
+
+The demo website can currently be run locally using VS Code Live Server. See the setup instructions below.
+
 ## Tech Stack
 
 | Layer | Technologies |
@@ -56,7 +63,7 @@ Ensure the following are installed or available:
 ### 1. Clone the repository
 
 ```bash
-git clone [https://github.com/Yashrajpatil22/user-analytics.git](https://github.com/Yashrajpatil22/user-analytics.git)
+git clone https://github.com/Yashrajpatil22/user-analytics.git
 cd user-analytics
 ```
 
