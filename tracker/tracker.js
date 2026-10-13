@@ -41,4 +41,36 @@ async function trackPageView() {
   }
 }
 
+
+async function trackClick(event) {
+  const eventData = {
+    session_id: getSessionId(),
+    event_type: "click",
+    page_url: window.location.href,
+    timestamp: new Date().toISOString(),
+    x: event.pageX,
+    y: event.pageY,
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(eventData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to track click: ${response.status}`);
+    }
+
+    console.log("Click tracked successfully");
+  } catch (error) {
+    console.error("Error tracking click:", error);
+  }
+}
+
+
 trackPageView();
+document.addEventListener("click", trackClick);
