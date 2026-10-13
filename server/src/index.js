@@ -1,11 +1,15 @@
 import express from 'express';
 import connectDB from './db/index.js';
+import eventRoutes from './routes/Event.route.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
+
+app.use(express.json());
+app.use('/api/events', eventRoutes);
 
 connectDB()
   .then(
