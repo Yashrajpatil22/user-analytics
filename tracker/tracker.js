@@ -75,6 +75,44 @@ async function trackClick(event) {
   }
 }
 
+function renderHeatmapMarkers(clicks) {
+  document
+    .querySelectorAll("[data-user-analytics-heatmap-marker]")
+    .forEach((marker) => marker.remove());
+
+  clicks.forEach((click) => {
+    const marker = document.createElement("div");
+
+    const scale =
+      window.innerWidth / (click.viewport_width || window.innerWidth);
+
+    marker.dataset.userAnalyticsHeatmapMarker = "true";
+    marker.style.position = "absolute";
+    marker.style.left = `${click.x * scale}px`;
+    marker.style.top = `${click.y * scale}px`;
+    marker.style.width = "14px";
+    marker.style.height = "14px";
+    marker.style.borderRadius = "50%";
+    marker.style.backgroundColor = "rgba(37, 99, 235, 0.75)";
+    marker.style.border = "2px solid rgba(191, 219, 254, 0.9)";
+    marker.style.boxSizing = "border-box";
+    marker.style.pointerEvents = "none";
+    marker.style.zIndex = "2147483647";
+    marker.style.transform = "translate(-50%, -50%)";
+
+    document.body.appendChild(marker);
+  });
+}
+
+window.addEventListener("message", (event) => {
+  if (event.source !== window.parent) return;
+
+  if (event.data?.type !== "USER_ANALYTICS_HEATMAP") return;
+
+  if (!Array.isArray(event.data.clicks)) return;
+
+  renderHeatmapMarkers(event.data.clicks);
+});
 
 trackPageView();
 document.addEventListener("click", trackClick);
