@@ -18,7 +18,7 @@ A lightweight, full-stack analytics application that tracks user interactions on
 - **Frontend Dashboard:** https://user-analytics-nu.vercel.app
 - **Backend API:** https://user-analytics-u55g.onrender.com
 
-The demo website can currently be run locally using VS Code Live Server. See the setup instructions below.
+The demo website currently runs locally using VS Code Live Server. The tracking script is configured to send events to the deployed backend when testing the live dashboard.
 
 ## Tech Stack
 
@@ -57,6 +57,7 @@ Ensure the following are installed or available:
 - Node.js and npm
 - MongoDB Atlas account or a local MongoDB instance
 - Git
+- VS Code Live Server extension (for running the demo webpage locally)
 
 ## Setup and Installation
 
@@ -66,8 +67,6 @@ Ensure the following are installed or available:
 git clone https://github.com/Yashrajpatil22/user-analytics.git
 cd user-analytics
 ```
-
-Replace the placeholder with your public GitHub repository URL.
 
 ### 2. Configure the backend
 
@@ -119,15 +118,28 @@ Vite will display the local URL for the dashboard, typically:
 http://localhost:5173
 ```
 
-Ensure the API base URL in the frontend service configuration points to the running backend.
+For local development, ensure the frontend API configuration points to the local backend. For the deployed dashboard, the `VITE_API_URL` environment variable is configured in Vercel with the deployed backend's base URL, without `/api`.
 
 ### 4. Run the demo webpage
 
-Serve the demo directory using a local static HTTP server. For example, using the VS Code Live Server extension, open `demo/index.html` and launch it with Live Server.
+Serve the demo directory using VS Code Live Server. Open `demo/index.html` and launch it with Live Server.
 
 The demo page loads the tracking script from `tracker/tracker.js`.
 
-**Important:** Keep the backend, frontend, and demo webpage running while testing the complete application.
+To send events to the deployed backend, configure the tracking endpoint in `demo/index.html` before loading the tracker script:
+
+```html
+<script>
+  window.USER_ANALYTICS_API_URL =
+    "https://user-analytics-u55g.onrender.com/api/events";
+</script>
+
+<script src="../tracker/tracker.js"></script>
+```
+
+The tracker uses this configured endpoint when available and falls back to `http://localhost:3000/api/events` when no custom endpoint is specified.
+
+**Important:** Keep the backend, frontend, and demo webpage running when testing the complete application locally. When testing against the deployed backend, the local backend does not need to be running.
 
 ### 5. Test event tracking
 
@@ -177,7 +189,7 @@ Each event contains the information needed to reconstruct user activity.
 - **Heatmap visualization:** The heatmap uses recorded click positions to display markers. Responsive layouts, changes to page content, and differences between the original browser viewport and the preview can affect alignment.
 - **Website embedding:** Some websites prevent iframe embedding through browser security policies. The dashboard therefore provides a fallback preview. Rendering markers inside an embedded webpage also requires the tracking script to be present and running on that page.
 - **Database design:** Events are stored as individual MongoDB documents, making session histories and page-specific click queries straightforward. Indexes support common query patterns.
-- **Deployment:** The application is configured for local development by default. Production deployment requires configuring environment variables, the frontend API URL, database access, and appropriate CORS settings.
+- **Deployment:** The React dashboard is deployed on Vercel, the Express API on Render, and event data is stored in MongoDB Atlas. The demo webpage currently runs locally. Production configuration uses environment variables for the frontend API URL and database connection, along with CORS settings for permitted frontend origins.
 - **Scope:** Authentication, user management, advanced analytics, and additional event types are excluded to keep the implementation aligned with the assignment.
 
 ## Limitations
@@ -186,7 +198,8 @@ Each event contains the information needed to reconstruct user activity.
 - Browser storage restrictions or disabled JavaScript can prevent reliable tracking.
 - The application does not attempt to identify users across different browsers or devices.
 - Heatmap accuracy depends on the recorded coordinates and how the webpage is rendered in the preview.
+- The demo webpage is not currently hosted publicly and must be run locally for testing.
 
 ## Future Improvements
 
-Potential extensions include time-bounded sessions, configurable event collection, more advanced heatmap aggregation, and deployment to a public hosting environment.
+Potential extensions include time-bounded sessions, configurable event collection, more advanced heatmap aggregation, and public hosting for the demo webpage.
