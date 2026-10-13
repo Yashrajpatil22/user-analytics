@@ -9,7 +9,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: ["https://user-analytics-nu.vercel.app", "http://localhost:5173"]
+    origin: [
+      "https://user-analytics-nu.vercel.app",
+      "http://localhost:5173",
+      "http://127.0.0.1:5500/demo/index.html",
+    ],
   }),
 );
 
