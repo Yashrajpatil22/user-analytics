@@ -12,7 +12,7 @@ app.use(
     origin: [
       "https://user-analytics-nu.vercel.app",
       "http://localhost:5173",
-      "http://127.0.0.1:5500/demo/index.html",
+      "http://127.0.0.1:5500",
     ],
   }),
 );
