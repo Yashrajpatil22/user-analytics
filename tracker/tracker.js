@@ -12,7 +12,8 @@ function getSessionId() {
 }
 
 
-const API_URL = "http://localhost:3000/api/events";
+const API_URL =
+  window.USER_ANALYTICS_API_URL || "http://localhost:3000/api/events";
 
 async function trackPageView() {
   const eventData = {
