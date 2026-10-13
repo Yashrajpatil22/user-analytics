@@ -10,3 +10,16 @@ export async function fetchSessions() {
   const result = await response.json();
   return result.data;
 }
+
+export async function fetchSessionEvents(sessionId) {
+  const response = await fetch(
+    `${API_BASE_URL}/sessions/${encodeURIComponent(sessionId)}/events`,
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch session events");
+  }
+
+  const result = await response.json();
+  return result.data;
+}

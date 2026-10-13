@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchSessions } from "../services/analyticsService.js";
 import Header from "../components/layouts/Header.jsx";
 function SessionsPage() {
@@ -6,6 +7,7 @@ function SessionsPage() {
     const [sessions, setSessions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
       const loadSessions = async () => {
@@ -98,11 +100,10 @@ function SessionsPage() {
                         <td className="px-4 py-4">
                           <button
                             type="button"
-                            className="font-medium text-blue-700 transition-colors duration-150 hover:text-blue-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
+                            className="cursor-pointer font-medium text-blue-700 transition-colors duration-150 hover:text-blue-900 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
                             onClick={() =>
-                              console.log(
-                                "Selected session:",
-                                session.session_id,
+                              navigate(
+                                `/sessions/${encodeURIComponent(session.session_id)}`,
                               )
                             }
                           >
